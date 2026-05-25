@@ -1,0 +1,2 @@
+ALTER TABLE "start_up_speciality" ADD COLUMN "category_id" varchar(255) NOT NULL;--> statement-breakpoint
+ALTER TABLE "start_up_speciality" ADD CONSTRAINT "start_up_speciality_category_id_start_up_category_id_fk" FOREIGN KEY ("category_id") REFERENCES "public"."start_up_category"("id") ON DELETE no action ON UPDATE no action;
