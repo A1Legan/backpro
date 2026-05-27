@@ -1,11 +1,11 @@
 {
-  "id": "9147e97d-eab6-4d49-9744-53a5ad9551bb",
-  "prevId": "1844a879-5a1c-4ba6-8b78-688e26f0cc55",
+  "id": "3c5924cf-d318-4cb1-86ca-abd33246f77f",
+  "prevId": "300f6282-728c-4a8b-9631-066031adec00",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.frame_category": {
-      "name": "frame_category",
+    "public.categories": {
+      "name": "categories",
       "schema": "",
       "columns": {
         "id": {
@@ -18,7 +18,7 @@
           "name": "is_deleted",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": false
         },
         "created_at": {
@@ -28,8 +28,8 @@
           "notNull": true,
           "default": "now()"
         },
-        "frame_category": {
-          "name": "frame_category",
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -43,8 +43,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.frame_speciality": {
-      "name": "frame_speciality",
+    "public.categoriesStart": {
+      "name": "categoriesStart",
       "schema": "",
       "columns": {
         "id": {
@@ -57,7 +57,7 @@
           "name": "is_deleted",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": false
         },
         "created_at": {
@@ -67,8 +67,47 @@
           "notNull": true,
           "default": "now()"
         },
-        "frame_speciality": {
-          "name": "frame_speciality",
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.frame": {
+      "name": "frame",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "is_deleted": {
+          "name": "is_deleted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -78,16 +117,35 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "speciality_id": {
+          "name": "speciality_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "frame_speciality_category_id_frame_category_id_fk": {
-          "name": "frame_speciality_category_id_frame_category_id_fk",
-          "tableFrom": "frame_speciality",
-          "tableTo": "frame_category",
+        "frame_category_id_categories_id_fk": {
+          "name": "frame_category_id_categories_id_fk",
+          "tableFrom": "frame",
+          "tableTo": "categories",
           "columnsFrom": [
             "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "frame_speciality_id_speciality_id_fk": {
+          "name": "frame_speciality_id_speciality_id_fk",
+          "tableFrom": "frame",
+          "tableTo": "speciality",
+          "columnsFrom": [
+            "speciality_id"
           ],
           "columnsTo": [
             "id"
@@ -102,8 +160,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.start_up_category": {
-      "name": "start_up_category",
+    "public.speciality": {
+      "name": "speciality",
       "schema": "",
       "columns": {
         "id": {
@@ -116,7 +174,7 @@
           "name": "is_deleted",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": false
         },
         "created_at": {
@@ -126,8 +184,8 @@
           "notNull": true,
           "default": "now()"
         },
-        "start_up_category": {
-          "name": "start_up_category",
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -141,8 +199,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.start_up_speciality": {
-      "name": "start_up_speciality",
+    "public.specialityStart": {
+      "name": "specialityStart",
       "schema": "",
       "columns": {
         "id": {
@@ -155,7 +213,7 @@
           "name": "is_deleted",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": false
         },
         "created_at": {
@@ -165,8 +223,47 @@
           "notNull": true,
           "default": "now()"
         },
-        "start_up_speciality": {
-          "name": "start_up_speciality",
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.start": {
+      "name": "start",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "is_deleted": {
+          "name": "is_deleted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -176,16 +273,35 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "speciality_id": {
+          "name": "speciality_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "start_up_speciality_category_id_start_up_category_id_fk": {
-          "name": "start_up_speciality_category_id_start_up_category_id_fk",
-          "tableFrom": "start_up_speciality",
-          "tableTo": "start_up_category",
+        "start_category_id_categoriesStart_id_fk": {
+          "name": "start_category_id_categoriesStart_id_fk",
+          "tableFrom": "start",
+          "tableTo": "categoriesStart",
           "columnsFrom": [
             "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "start_speciality_id_specialityStart_id_fk": {
+          "name": "start_speciality_id_specialityStart_id_fk",
+          "tableFrom": "start",
+          "tableTo": "specialityStart",
+          "columnsFrom": [
+            "speciality_id"
           ],
           "columnsTo": [
             "id"

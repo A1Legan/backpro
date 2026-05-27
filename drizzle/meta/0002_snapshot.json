@@ -1,11 +1,11 @@
 {
-  "id": "1844a879-5a1c-4ba6-8b78-688e26f0cc55",
-  "prevId": "bf3e2d87-417d-439a-9b5d-14532f54b766",
+  "id": "300f6282-728c-4a8b-9631-066031adec00",
+  "prevId": "628a5f71-13b7-4d84-81ed-5593188cf965",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.frame_category": {
-      "name": "frame_category",
+    "public.categories": {
+      "name": "categories",
       "schema": "",
       "columns": {
         "id": {
@@ -21,8 +21,15 @@
           "notNull": false,
           "default": false
         },
-        "frame_category": {
-          "name": "frame_category",
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -36,8 +43,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.frame_speciality": {
-      "name": "frame_speciality",
+    "public.frame": {
+      "name": "frame",
       "schema": "",
       "columns": {
         "id": {
@@ -53,8 +60,15 @@
           "notNull": false,
           "default": false
         },
-        "frame_speciality": {
-          "name": "frame_speciality",
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -64,16 +78,35 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "speciality_id": {
+          "name": "speciality_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "frame_speciality_category_id_frame_category_id_fk": {
-          "name": "frame_speciality_category_id_frame_category_id_fk",
-          "tableFrom": "frame_speciality",
-          "tableTo": "frame_category",
+        "frame_category_id_categories_id_fk": {
+          "name": "frame_category_id_categories_id_fk",
+          "tableFrom": "frame",
+          "tableTo": "categories",
           "columnsFrom": [
             "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "frame_speciality_id_speciality_id_fk": {
+          "name": "frame_speciality_id_speciality_id_fk",
+          "tableFrom": "frame",
+          "tableTo": "speciality",
+          "columnsFrom": [
+            "speciality_id"
           ],
           "columnsTo": [
             "id"
@@ -88,8 +121,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.start_up_category": {
-      "name": "start_up_category",
+    "public.speciality": {
+      "name": "speciality",
       "schema": "",
       "columns": {
         "id": {
@@ -105,8 +138,15 @@
           "notNull": false,
           "default": false
         },
-        "start_up_category": {
-          "name": "start_up_category",
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -120,8 +160,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.start_up_speciality": {
-      "name": "start_up_speciality",
+    "public.start": {
+      "name": "start",
       "schema": "",
       "columns": {
         "id": {
@@ -137,8 +177,15 @@
           "notNull": false,
           "default": false
         },
-        "start_up_speciality": {
-          "name": "start_up_speciality",
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -148,16 +195,35 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "speciality_id": {
+          "name": "speciality_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "start_up_speciality_category_id_start_up_category_id_fk": {
-          "name": "start_up_speciality_category_id_start_up_category_id_fk",
-          "tableFrom": "start_up_speciality",
-          "tableTo": "start_up_category",
+        "start_category_id_categories_id_fk": {
+          "name": "start_category_id_categories_id_fk",
+          "tableFrom": "start",
+          "tableTo": "categories",
           "columnsFrom": [
             "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "start_speciality_id_speciality_id_fk": {
+          "name": "start_speciality_id_speciality_id_fk",
+          "tableFrom": "start",
+          "tableTo": "speciality",
+          "columnsFrom": [
+            "speciality_id"
           ],
           "columnsTo": [
             "id"

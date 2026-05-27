@@ -1,103 +1,61 @@
 import { eq } from "drizzle-orm";
 import { db } from "./src/server/db";
-import { frameCategory, frameSpeciality, frameSpecialityToCategory } from "./src/server/db/schema";
+import { frame, categories, speciality } from "@/src/server/db/schema";
 
-// const foundSpeciality = await db.query.frameSpeciality.findMany();
+// const foundFrame = await db.query.frame.findMany();
 
-// console.log(foundSpeciality);
+// console.log(foundFrame);
 
-// await db.insert(frameCategory).values({
-//     name: "HTML"
-
+// await db.insert(frame).values({
+//     name: "second frame",
+//     categoryId: "019e6af3-e4da-7000-bf4e-5d015a692c3d",
+//     specialityId: "019e6af3-e4e0-7000-b076-4fe697907654",
 // });
 
-// await db.insert(frameSpeciality).values({
-//     name: "Бухгалтер",
-//     categoryId: "019e6065-d86f-7000-a1f7-2e08b2dcd5f1",
+// await db.insert(frame).values({
+//     name: "third frame",
+//     categoryId: "019e6af3-e4da-7000-bf4e-5d015a692c3d",
+//     specialityId: "019e6af3-e4e0-7000-b076-4fe697907654",
 // });
 
-// await db.insert(frameSpeciality).values({
-//     name: "Бухгалтер Про",
-//     categoryId: "019e6065-d86f-7000-a1f7-2e08b2dcd5f1",
-// });
-
-// await db.insert(frameSpeciality).values({
-//     name: "Бухгалтер Вип",
-//     categoryId: "019e6065-d86f-7000-a1f7-2e08b2dcd5f1",
-// });
-
-// const frameSpecialityAfter = await db.query.frameSpeciality.findMany();
-
-// console.log(frameSpecialityAfter);
-
-// await db.update(frameSpeciality).set({
-//     name: "Бухгалтер Мини",
+// await db.update(frame).set({
+//     name: "best frame"
 // })
-// .where(eq(frameSpeciality.id, "019e606a-4200-7000-aec2-f3a14329aacb"));
+// .where(eq(frame.id, "019e6af5-84df-7000-8895-0a20c8a0c8a7"));
 
-// foundSpeciality = await db.query.frameSpeciality.findMany();
+// await db.update(frame).set({
+//     isDeleted: true,
+// })
+// .where(eq(frame.id, "019e6af5-84df-7000-8895-0a20c8a0c8a7"));
 
-// console.log(foundSpeciality);
-
-await db.update(frameSpeciality).set({
-    isDeleted: true,
-})
-.where(eq(frameSpeciality.id, "019e606a-4200-7000-aec2-f3a14329aacb"))
-
-await db.insert(frameSpecialityToCategory).values({
-    specialityId: "019e606c-5410-7000-939f-0d68f5e5c3d2",
-    categoryId: "019e6065-d86f-7000-a1f7-2e08b2dcd5f1", 
-});
-
-await db.insert(frameSpecialityToCategory).values({
-    specialityId: "019e606c-5416-7000-b6b7-97c91f2227b4",
-    categoryId: "019e6065-d86f-7000-a1f7-2e08b2dcd5f1",
-});
-
-const foundSpecialityWithCategory = await db.query.frameSpeciality.findMany({
-    where: eq(frameSpeciality.isDeleted, false),
+const frameWithCategoty = await db.query.frame.findMany({
+    where: eq(frame.isDeleted, false),
     with: {
-        frameCategories: {
-            with: {
-                category: true,
-            }
-        },
-    }
+        category: true,
+    },
 });
 
-console.log(foundSpecialityWithCategory);
+// console.log(frameWithCategoty);
 
-// const foundCategoryWithSpeciality = await db.query.frameCategory.findMany({
-//     where: eq(frameSpeciality.isDeleted, false),
+// const categoryWithFrame = await db.query.categories.findMany({
+//     where: eq(categories.isDeleted, false),
 //     with: {
-//         frameSpecialities: {
-//             with: {
-//                 speciality: {
-//                     where: eq(frameSpeciality.isDeleted, false),
-//                 },
-//             }
+//         frame: {
+//             where: eq(frame.isDeleted, false),
 //         },
-//     }
-// });
+        
+//     },
+// })
 
-// console.log(foundCategoryWithSpeciality);
+// console.log(categoryWithFrame);
 
-const frameCategories = await db.query.frameCategory.findMany({
-    where: eq(frameCategory.id, "019e6065-d86f-7000-a1f7-2e08b2dcd5f1"),
+const category = await db.query.categories.findFirst({
+    where: eq(categories.id, "019e6af3-e4da-7000-bf4e-5d015a692c3d"),
     with: {
-        frameSpecialities: {
-            with: {
-                speciality: true,
-            }
-        }
-    }
+        frame: {
+            where: eq(frame.isDeleted, false),
+        },
+    },
 });
 
-const filtered = frameCategories.map(category => ({
-    ...category,
-    frameSpecialities: category.frameSpecialities.filter(
-        fs => !fs.speciality.isDeleted
-    ),
-}));
-
-console.log(filtered);
+console.log(category);

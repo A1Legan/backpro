@@ -1,62 +1,88 @@
 import { relations } from "drizzle-orm";
 import * as pg from "drizzle-orm/pg-core";
 
-const commonFields = {
+export const commonFields = {
     id: pg
         .varchar("id", { length: 255 })
         .notNull()
         .primaryKey()
         .$defaultFn(() => Bun.randomUUIDv7()),
-    isDeleted: pg.boolean("is_deleted").notNull().default(false),
+    isDeleted: pg.boolean("is_deleted").default(false),
     createdAt: pg.timestamp("created_at").notNull().defaultNow(),
 };
 
-export const frameCategory = pg.pgTable("frame_category", {
+export const frame = pg.pgTable("frame", {
     ...commonFields,
-    name: pg.varchar("frame_category", { length: 255 }).notNull(),
-});
-
-export const frameSpeciality = pg.pgTable("frame_speciality", {
-    ...commonFields,
-    name: pg.varchar("frame_speciality", { length: 255 }).notNull(),
-});
-
-export const startUpCategory = pg.pgTable("start_up_category", {
-    ...commonFields,
-    name: pg.varchar("start_up_category", { length: 255 }).notNull(),
-});
-
-export const startUpSpeciality = pg.pgTable("start_up_speciality", {
-    ...commonFields,
-    name: pg.varchar("start_up_speciality", { length: 255 }).notNull(),
-});
-
-export const frameSpecialityToCategory = pg.pgTable("frame_speciality_to_category", {
-    specialityId: pg
-        .varchar("speciality_id", { length: 255 })
-        .notNull()
-        .references(() => frameSpeciality.id),
+    name: pg.varchar("name", { length: 255 }).notNull(),
     categoryId: pg
         .varchar("category_id", { length: 255 })
         .notNull()
-        .references(() => frameCategory.id),
+        .references(() => categories.id),
+    specialityId: pg
+        .varchar("speciality_id", { length: 255 })
+        .notNull()
+        .references(() => speciality.id),
 });
 
-export const frameCategoryRelations = relations(frameCategory, ({ many }) => ({
-    frameSpecialities: many(frameSpecialityToCategory),
+export const categories = pg.pgTable("categories", {
+    ...commonFields,
+    name: pg.varchar("name", { length: 255 }).notNull(),
+});
+
+export const speciality = pg.pgTable("speciality", {
+    ...commonFields,
+    name: pg.varchar("name", { length: 255 }).notNull(),
+});
+
+export const frameRelations = relations(frame, ({ one }) => ({
+    category: one(categories, {
+        references: [categories.id],
+        fields: [frame.categoryId],
+    }),
 }));
 
-export const frameSpecialityRelations = relations(frameSpeciality, ({ many }) => ({
-    frameCategories: many(frameSpecialityToCategory),
+export const categoriesRelations = relations(categories, ({ many }) => ({
+    frame: many(frame),
 }));
 
-export const frameSpecialityToCategoryRelations = relations(frameSpecialityToCategory, ({ one }) => ({
-    speciality: one(frameSpeciality, {
-        fields: [frameSpecialityToCategory.specialityId],
-        references: [frameSpeciality.id],
+export const specialityRelations = relations(speciality, ({ many }) => ({
+    frame: many(frame),
+}));
+
+export const start = pg.pgTable("start", {
+    ...commonFields,
+    name: pg.varchar("name", { length: 255 }).notNull(),
+    industryId: pg
+        .varchar("industry_id", { length: 255 })
+        .notNull()
+        .references(() => industry.id),
+    stageId: pg
+        .varchar("stage_id", { length: 255 })
+        .notNull()
+        .references(() => stage.id),
+});
+
+export const industry = pg.pgTable("industry", {
+    ...commonFields,
+    name: pg.varchar("name", { length: 255 }).notNull(),
+});
+
+export const stage = pg.pgTable("stage", {
+    ...commonFields,
+    name: pg.varchar("name", { length: 255 }).notNull(),
+});
+
+export const startRelations = relations(start, ({ one }) => ({
+    industries: one(industry, {
+        references: [industry.id],
+        fields: [start.industryId],
     }),
-    category: one(frameCategory, {
-        fields: [frameSpecialityToCategory.categoryId],
-        references: [frameCategory.id],
-    }),
+}));
+
+export const industryRelations = relations(industry, ({ many }) => ({
+    frame: many(frame),
+}));
+
+export const stageRelations = relations(stage, ({ many }) => ({
+    frame: many(frame),
 }));
