@@ -56,18 +56,9 @@ export const start = pg.pgTable("start", {
         .varchar("industry_id", { length: 255 })
         .notNull()
         .references(() => industry.id),
-    stageId: pg
-        .varchar("stage_id", { length: 255 })
-        .notNull()
-        .references(() => stage.id),
 });
 
 export const industry = pg.pgTable("industry", {
-    ...commonFields,
-    name: pg.varchar("name", { length: 255 }).notNull(),
-});
-
-export const stage = pg.pgTable("stage", {
     ...commonFields,
     name: pg.varchar("name", { length: 255 }).notNull(),
 });
@@ -80,9 +71,5 @@ export const startRelations = relations(start, ({ one }) => ({
 }));
 
 export const industryRelations = relations(industry, ({ many }) => ({
-    frame: many(frame),
-}));
-
-export const stageRelations = relations(stage, ({ many }) => ({
     frame: many(frame),
 }));
