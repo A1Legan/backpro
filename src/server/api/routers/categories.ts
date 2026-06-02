@@ -3,6 +3,7 @@ import { db } from "../../db";
 import { and, eq } from "drizzle-orm";
 import { categories } from "../../db/schema";
 import z from "zod/v4";
+import { categorySchema } from "@/src/app/lib/schemas/category";
 
 export const categoriesRouter = new Elysia({
     prefix: "/categories"
@@ -23,4 +24,20 @@ export const categoriesRouter = new Elysia({
     params: z.object({
         id: z.string(),
     }),
-});
+})
+.post("/", async ({ body }) => {
+    await db.insert(categories).values({
+        name: body.name,
+    })
+}, {
+    body: categorySchema
+})
+.put("/:id", async ({ body, params }) => {
+    await db.update(categories).set(body).where(eq(categories.id, params.id));
+}, 
+{
+    body: categorySchema,
+    params: z.object({
+        id: z.string,
+    }),
+})
